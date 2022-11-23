@@ -6,7 +6,7 @@ public class Main {
         Connection conn = Conexion();
         //insireProduto(JOptionPane.showInputDialog("Código"), JOptionPane.showInputDialog("Descripcion"), Float.parseFloat(JOptionPane.showInputDialog("Precio")), Date.valueOf(JOptionPane.showInputDialog("Fecha")) ,conn);
 
-        listaProdutos(conn);
+        exe(conn);
         conn.close();
     }
 
@@ -28,34 +28,44 @@ public class Main {
         return conn;
     }
 
-    public static void insireProduto(String code, String descripcion, float precio, Date fecha, Connection conne){
-        try {
-            conne.prepareStatement("INSERT INTO PRODUTOS VALUES(" + "'"+ code +"'," + "'"+descripcion +"'," + precio +"," + "'"+fecha+"')").executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
-    public static void listaProdutos(Connection connection){
+    public static void exe(Connection connection){
         ResultSet rs = null;
         String codp=null;
-        String nomep=null;
+        String nomep="",nomep1="",nomep2="",nomep3="",nomep4="";
+        float graxaTotal1=0,graxaTotal2=0,graxaTotal3=0,graxaTotal4 =0;
         int peso;
         int graxa;
         try {
             rs = connection.createStatement().executeQuery("select codp,nomec,graxa, peso from componentes right JOIN composicion ON componentes.codc = composicion.codc;");
             while(rs.next()){
-//                System.out.println("Código: " + rs.getString(1) + " ,Description: " + rs.getString(3)+" ,Prezo: " + rs.getInt(2) );
-                System.out.println(rs.getString( 1));
                 codp=rs.getString(1);
                 nomep=rs.getString(2);
                 graxa=rs.getInt(3);
                 peso=rs.getInt(4);
-
-                System.out.println(codp);
-                System.out.println();
+                if(codp.equalsIgnoreCase("p1")){
+                    nomep1=nomep1+nomep+" ";
+                    graxaTotal1+=peso/100*graxa;
+                }
+                if(codp.equalsIgnoreCase("p2")){
+                    nomep2=nomep2+nomep+" ";
+                    graxaTotal2+=peso/100*graxa;
+                }
+                if(codp.equalsIgnoreCase("p3")){
+                    nomep3=nomep3+nomep+" ";
+                    graxaTotal3+=peso/100*graxa;
+                }
+                if(codp.equalsIgnoreCase("p4")){
+                    nomep4=nomep4+nomep+" ";
+                    graxaTotal4+=peso/100*graxa;
+                }
 
             }
+
+            System.out.print("\nP1\n"+nomep1+"\n"+"grasas Total: "+graxaTotal1);
+            System.out.print("\nP2\n"+nomep2+"\n"+"grasas Total: "+graxaTotal2);
+            System.out.print("\nP3\n"+nomep3+"\n"+"grasas Total: "+graxaTotal3);
+            System.out.print("\nP4\n"+nomep4+"\n"+"grasas Total: "+graxaTotal4);
             rs.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -84,13 +94,5 @@ public class Main {
                         "insert into componentes values ('c4','avicola',5);";
 
             stmt.executeUpdate(sql);
-    }
-
-    public static void eliminaProduto(String code, Connection connection){
-        try {
-            connection.createStatement().executeUpdate("DELETE FROM produtos WHERE codigo = '" + code + "'");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

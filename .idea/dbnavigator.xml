@@ -31,7 +31,7 @@
     <connection id="9b8c9b76-1c32-4dc6-970e-5c05acd4bee2">
       <console name="Connection" type="STANDARD" schema="public" session="Main"><![CDATA[--select * from componentes,composicion
 
-SELECT distinct codp,nomec,graxa,peso FROM componentes inner JOIN composicion ON componentes.codc=composicion.codc group by codc;]]></console>
+SELECT codp,nomec,graxa,peso FROM componentes inner JOIN composicion ON componentes.codc=composicion.codc;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
